@@ -1,13 +1,12 @@
 package com.example.project.ui.login
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.project.R
 import com.example.project.databinding.ActivityLoginBinding
+import com.example.project.util.UiUtil.getDuration
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -27,13 +26,20 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        Handler(Looper.getMainLooper()).postDelayed(
-            {
-                //startActivity(Intent(this,ListActivity::class.java))
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            },
-            5000 // value in milliseconds
-        )
+        val duration = getDuration(applicationContext,R.drawable.splash_3)
+        val background = object : Thread() {
+            override fun run() {
+                try {
+                    sleep(duration.toLong() * 6)
+                    //val intent = Intent(baseContext, HomeActivity::class.java)
+                    //startActivity(intent)
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+                }catch (e : Exception){
+                    e.printStackTrace()
+                }
+            }
+        }
+        background.start()
 
     }
 }
